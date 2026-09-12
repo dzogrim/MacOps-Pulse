@@ -81,5 +81,8 @@ jobs:
       - name: Ensure test runner is executable
         run: test -x ./tests/run
 
+      - name: Bootstrap test environment
+        run: bash tests/bootstrap.bash
+
       - name: Run non-regression suite
         run: ./tests/run
