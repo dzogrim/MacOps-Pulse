@@ -38,7 +38,7 @@ def stage_runtime(root):
                 raise RuntimeError(f"Conflicting runtime library: {destination.name}")
             return
         copied[destination] = source
-        shutil.copy2(source, destination)
+        shutil.copy(source, destination)
         os.chmod(destination, 0o755)
         lines = checked("/usr/bin/otool", "-L", str(source)).splitlines()[1:]
         dependencies = [line.strip().split(" (compatibility", 1)[0] for line in lines]
