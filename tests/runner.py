@@ -102,12 +102,12 @@ def main():
         # Root is the working directory: PWD and inherited launch paths cannot expose host HOME.
         sandbox = ["/usr/bin/sandbox-exec", "-D", f"TEST_ROOT={root}",
                    "-f", str(root / "suite/tests/sandbox.sb")]
-        checked_env = subprocess.run(sandbox + ["/usr/bin/true"], cwd=root, env=env)
+        checked_env = subprocess.run(sandbox + ["/usr/bin/true"], cwd=root, env=env, check=False)
         if checked_env.returncode:
             raise RuntimeError("Cannot activate sandbox; tests were NOT run.")
         version_check = subprocess.run(sandbox + [str(runtime / "bin/bash"),
                                        "--noprofile", "--norc", "-c",
-                                       "(( BASH_VERSINFO[0] >= 5 ))"], cwd=root, env=env)
+                                       "(( BASH_VERSINFO[0] >= 5 ))"], cwd=root, env=env, check=False)
         if version_check.returncode:
             raise RuntimeError("The staged Bash must be version 5 or newer.")
         child = subprocess.Popen(sandbox + [str(runtime / "bin/bash"),

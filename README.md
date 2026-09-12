@@ -89,4 +89,3 @@ The tests are designed to avoid interacting with the real user environment, incl
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
