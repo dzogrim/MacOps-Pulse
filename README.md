@@ -2,9 +2,7 @@
 
 [![CI](https://github.com/dzogrim/MacOps-Pulse/actions/workflows/tests.yml/badge.svg)](https://github.com/dzogrim/MacOps-Pulse/actions/workflows/tests.yml)
 
-**macOS Maintenance & Operations Toolkit**
-
-Powered by `refresh_system.sh`.
+macOS Maintenance & Operations Toolkit powered by `refresh_system.sh`.
 
 MacOps Pulse is a modular Bash toolkit for maintaining, updating,
 synchronizing, and auditing a macOS workstation from a single
@@ -15,16 +13,16 @@ explicit and independently executable.
 
 ## What it does
 
--   macOS and Mac App Store updates
--   Homebrew, MacPorts and Nix maintenance
--   Python environment management
--   Dotfiles and configuration synchronization
--   Configuration backups and comparisons
--   Application update checks
--   Architecture and compatibility checks
--   Spotlight and desktop maintenance
--   Misc. monitoring checks
--   Batch update, backup and comparison workflows
+- macOS and Mac App Store updates
+- Homebrew, MacPorts and Nix maintenance
+- Python environment management
+- Dotfiles and configuration synchronization
+- Configuration backups and comparisons
+- Application update checks
+- Architecture and compatibility checks
+- Spotlight and desktop maintenance
+- Misc. monitoring checks
+- Batch update, backup and comparison workflows
 
 ## Usage
 
@@ -61,10 +59,10 @@ Display all options:
 
 ## Requirements
 
--   macOS
--   Bash 5+
--   `fzf` or `gum` for the interactive interface
--   Additional tools are required only by their corresponding actions
+- macOS
+- Bash 5+
+- `fzf` or `gum` for the interactive interface
+- Additional tools are required only by their corresponding actions
 
 ## Philosophy
 
@@ -76,7 +74,8 @@ can be executed individually or as grouped workflows.
 
 ## Tests
 
-MacOps Pulse includes a non-regression test suite built around an isolated sandbox environment.
+MacOps Pulse includes a non-regression test suite built around an isolated
+sandbox environment.
 
 Run the full test suite with:
 
@@ -84,7 +83,9 @@ Run the full test suite with:
 ./tests/run
 ```
 
-The tests are designed to avoid interacting with the real user environment, including the actual $HOME, Desktop, Dropbox, package managers, and privileged system operations.
+The tests are designed to avoid interacting with the real user environment,
+including the actual $HOME, Desktop, Dropbox, package managers, and
+privileged system operations.
 
 ## License
 
