@@ -26,6 +26,10 @@ explicit and independently executable.
 
 ## Usage
 
+> [!NOTE]
+> Apple Terminal.app is supported, but modern terminal emulators such as iTerm2
+> are recommended for a best interactive experience.
+
 Launch the interactive menu:
 
 ``` bash
@@ -61,7 +65,7 @@ Display all options:
 
 ### Supported platforms
 
-MacOps Pulse is designed for macOS and supports both major Mac architectures:
+MacOps Pulse was designed for macOS and supports both major Mac architectures:
 
 - Apple Silicon (`arm64`)
 - Intel (`x86_64`)
@@ -71,7 +75,7 @@ Architecture-specific checks are performed at runtime where required.
 
 ### Requirements
 
-MacOps Pulse requires:
+MacOps Pulse `refresh_system.sh` requires:
 
 - macOS
 - Bash 5 or later
@@ -82,7 +86,7 @@ MacOps Pulse requires:
 > The `/bin/bash` bundled with macOS is Bash 3.2 and is **not supported**.
 > Install a modern Bash before running MacOps Pulse.
 
-Using Homebrew:
+Using [Homebrew](https://brew.sh):
 
 ```bash
 brew install bash
