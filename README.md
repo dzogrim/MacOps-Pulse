@@ -93,8 +93,8 @@ Compare the system-provided Bash with the Homebrew version:
 
 | Installation | Command | Typical version | Supported |
 | --- | --- | --- | --- |
-| macOS system | `/bin/bash --version`              | Bash 3.2.57 | ❌ No |
-| Homebrew     | `/opt/homebrew/bin/bash --version` | Bash 5.3+   | ✅ Yes |
+| macOS system | `/bin/bash --version` | Bash 3.2.57 | ❌ No |
+| Homebrew | `/opt/homebrew/bin/bash --version` | Bash 5.3+ | ✅ Yes |
 
 ### Install Bash
 
