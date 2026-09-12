@@ -5,7 +5,7 @@
 macOS Maintenance & Operations Toolkit powered by `refresh_system.sh`.
 
 MacOps Pulse is a modern, modular Bash toolkit for maintaining, updating,
-synchronizing and auditing a macOS workstation from a single interactive CLI.
+synchronizing and auditing a macOS workstation from a single interactive **CLI**.
 
 It brings routine system operations together while keeping each task explicit
 and independently executable.
@@ -76,8 +76,8 @@ Architecture-specific checks are performed at runtime where required.
 
 #### Legacy Mac OS X / OS X support
 
-MacOps Pulse has evolved since 2015, when Apple's desktop operating system
-was still known as "OS X".
+MacOps Pulse has privately evolved since 2015, when Apple's desktop operating
+system was still known as "OS X".
 
 Earlier releases of the toolkit were developed for legacy "OS X" environments,
 while the current release targets modern "macOS" systems.
@@ -86,9 +86,10 @@ while the current release targets modern "macOS" systems.
 
 The core `refresh_system.sh` script requires:
 
-- macOS
+- **macOS**
+- **[Homebrew](https://brew.sh)**
 - **Bash 5** or later
-- `fzf` or `gum` for the interactive interface
+- **`fzf`** or **`gum`** for the interactive interface
 - Optionally `git` for cloning and updating the repository
 
 Additional tools are required only by the actions that use them.
@@ -182,7 +183,7 @@ Both may be installed at the same time.
 MacOps Pulse separates operational scripts from user-specific configuration.
 
 Maintenance scripts are typically stored outside the user's home directory,
-under `/opt/Admin/Scripts`.
+under `/opt/Admin/Scripts`. It is therefore available *system-wide*.
 
 User-specific configuration remains under the user's home directory.
 
@@ -201,12 +202,14 @@ A typical installation looks like this:
 │           └── <other maintenance scripts>
 │
 └── Users/
-    └── <user>/
+    └── <the-user>/
         ├── .bashrc
         ├── .bashrc.d/
         ├── .config/
         │   └── AdminHelpers/
         │       └── env
+        ├── Desktop/
+        ├── Downloads/
         └── <other user files>
 ```
 
@@ -249,18 +252,18 @@ A minimal example is an environment that uses a separate professional
 helper location could use:
 
 ```bash
-ADM_SHELL_USER_PROv1="marie.martin"
-ADM_SHELL_USER_PERSO="marie-martin"
-
-ADM_SHELL_SCPT_PROv1="${HOME}/.local/Admin/helpers"
 ADM_SHELL_SCPT_PERSO="/opt/Admin/Scripts"
+ADM_SHELL_SCPT_PROv1="${HOME}/.local/Admin/helpers"
+
+ADM_SHELL_USER_PERSO="mmarie"
+ADM_SHELL_USER_PROv1="marie.martin"
 ```
 
 > [!IMPORTANT]
 > The environment file is local configuration and must **never** be committed to
 > the public repository.
 >
-> Do not store any creds in the repository.
+> Do not store any *creds* in the repository.
 
 Create the configuration directory if necessary:
 
@@ -302,6 +305,12 @@ Run the full test suite with:
 The tests are designed to avoid interacting with the real user environment,
 including the actual `$HOME`, Desktop, Dropbox, iCloud, package managers and
 privileged system operations.
+
+You can also quickly check the action registry for inconsistencies:
+
+```bash
+refresh_system.sh --debug-choices
+```
 
 ## License
 
