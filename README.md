@@ -4,23 +4,23 @@
 
 macOS Maintenance & Operations Toolkit powered by `refresh_system.sh`.
 
-MacOps Pulse is a modular Bash toolkit for maintaining, updating,
-synchronizing, and auditing a macOS workstation from a single
-interactive CLI.
+MacOps Pulse is a modern and modular Bash toolkit for maintaining,
+updating, synchronizing, and auditing a macOS workstation from a
+single interactive CLI.
 
 It brings routine system operations together while keeping each task
 explicit and independently executable.
 
 ## What it does
 
-- macOS and Mac App Store updates
-- Homebrew, MacPorts and Nix maintenance
-- Python environment management
+- **macOS** and **Mac App Store** updates
+- **Homebrew**, **MacPorts** and **Nix** maintenance
+- **Python** environment management
 - Dotfiles and configuration synchronization
 - Configuration backups and comparisons
 - Application update checks
 - Architecture and compatibility checks
-- Spotlight and desktop maintenance
+- Spotlight and Desktop maintenance
 - Misc. monitoring checks
 - Batch update, backup and comparison workflows
 
@@ -79,7 +79,7 @@ MacOps Pulse requires:
 - Additional tools only for the actions that use them
 
 > [!IMPORTANT]
-> The `/bin/bash` bundled with macOS is Bash 3.2 and is not supported.
+> The `/bin/bash` bundled with macOS is Bash 3.2 and is **not supported**.
 > Install a modern Bash before running MacOps Pulse.
 
 Using Homebrew:
@@ -113,11 +113,18 @@ cd MacOps-Pulse
 chmod +x refresh_system.sh
 ```
 
-Verify the installation:
+Verify the installation and inspect dependencies:
 
 ```bash
 ./refresh_system.sh --help
+./refresh_system.sh --check-deps-scpt
 ./refresh_system.sh --list
+```
+
+Install missing optional dependencies when needed:
+
+```bash
+./refresh_system.sh --install-deps-scpt
 ```
 
 ### Interactive interface
@@ -138,8 +145,9 @@ brew install gum
 
 The development repository can be cloned anywhere, for example under a personal
 workspace directory.
-The operational scripts are expected to live outside the user home directory,
-under `/opt/Admin/Scripts`.
+
+For operational use, maintenance scripts are expected to live outside the user
+home directory, typically under `/opt/Admin/Scripts`.
 
 A typical layout is:
 
@@ -153,28 +161,29 @@ A typical layout is:
 │           ├── brew-update.sh
 │           ├── ports-update.sh
 │           ├── git_refresh.sh
-│           └── <other maintenance scripts> ...
+│           ├── <environment/config file>
+│           └── <other maintenance scripts>
 │
 └── Users/
     └── <user>/
         ├── .bashrc
         ├── .bashrc.d/
         ├── .config/
-        └── <other user home files> ...
+        └── <other user home files>
 ```
 
 The repository copy is used for development and version control, while the
-operational copy of refresh_system.sh and related helper scripts live under
-`/opt/Admin/Scripts/`.
+operational copy of refresh_system.sh and related helper scripts typically
+lives under `/opt/Admin/Scripts/` (must be in your env. PATH).
 
-The exact scripts directory and environment-file location are installation
-specific. Keep machine or user-specific paths and creds outside the
-public repository and expose them through the expected local environment or
-configuration.
+The exact scripts directory and environment/configuration file location are
+installation-specific. Keep machine-specific paths, user-specific paths and
+creds outside the public repository, and expose them through the expected
+local environment or configuration mechanism.
 
-Before using actions that depend on external storage or package managers,
-make sure their local paths and tools are configured. Optional dependencies
-are required only by the actions that use them.
+Before using actions that depend on external storage, package managers or
+third-party tools, make sure their local paths and dependencies are configured.
+Optional dependencies are required only by the actions that use them.
 
 ## Philosophy
 
