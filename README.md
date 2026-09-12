@@ -25,7 +25,7 @@ and independently executable.
 
 ## Usage
 
-> [!NOTE]
+> [!TIP]
 > Apple Terminal.app is fully supported, but a modern terminal emulator such as
 > iTerm2 is recommended for a better interactive experience.
 
@@ -59,6 +59,10 @@ Display all available command-line arguments:
 ```bash
 ./refresh_system.sh --help
 ```
+
+> [!WARNING]
+> Some maintenance actions may modify system or package-manager configuration.
+> Review the selected action before running it.
 
 ## Installation
 
@@ -111,7 +115,7 @@ The easiest way to install a current Bash version on macOS is with
 [Homebrew](https://brew.sh):
 
 ```bash
-brew install bash
+brew install bash fzf
 ```
 
 Verify that Bash 5 or later is available:
@@ -160,6 +164,11 @@ Finally, list the available maintenance actions:
 ./refresh_system.sh --list
 ```
 
+> [!WARNING]
+> Before getting started, review the header notes in `refresh_system.sh`.
+> They provide useful details about its environment, dependencies, and expected
+> behavior.
+
 ### Interactive interface
 
 MacOps Pulse supports both `fzf` and `gum` as interactive selectors.
@@ -176,7 +185,8 @@ or:
 brew install gum
 ```
 
-Both may be installed at the same time.
+> [!TIP]
+> Install both `fzf` and `gum` to make both interactive interfaces available.
 
 ## Recommended local layout
 
@@ -259,7 +269,7 @@ ADM_SHELL_USER_PERSO="mmarie"
 ADM_SHELL_USER_PROv1="marie.martin"
 ```
 
-> [!IMPORTANT]
+> [!CAUTION]
 > The environment file is local configuration and must **never** be committed to
 > the public repository.
 >
