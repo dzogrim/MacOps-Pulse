@@ -1,5 +1,7 @@
 # MacOps Pulse
 
+[![CI](https://github.com/dzogrim/MacOps-Pulse/actions/workflows/tests.yml/badge.svg)](https://github.com/dzogrim/MacOps-Pulse/actions/workflows/tests.yml)
+
 **macOS Maintenance & Operations Toolkit**
 
 Powered by `refresh_system.sh`.

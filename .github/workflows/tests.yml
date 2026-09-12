@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Shell checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Bash syntax
+        run: bash -n refresh_system.sh
+
+      - name: Run ShellCheck
+        run: |
+          shellcheck refresh_system.sh
+          find tests \
+            -type f \
+            \( -name '*.bash' -o -name '*.sh' \) \
+            -print0 |
+            xargs -0 -r shellcheck
+
+  tests:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: macOS 14 ARM64
+            os: macos-14
+
+          - name: macOS 15 ARM64
+            os: macos-15
+
+          - name: macOS 26 ARM64
+            os: macos-26
+
+          - name: macOS 15 Intel
+            os: macos-15-intel
+
+          - name: macOS 26 Intel
+            os: macos-26-intel
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show runner environment
+        run: |
+          printf '%s\n' '--- macOS ---'
+          sw_vers
+
+          printf '\n%s\n' '--- Architecture ---'
+          uname -m
+
+          printf '\n%s\n' '--- Bash ---'
+          bash --version | head -n 1
+
+      - name: Check Bash syntax
+        run: bash -n refresh_system.sh
+
+      - name: Ensure test runner is executable
+        run: test -x ./tests/run
+
+      - name: Run non-regression suite
+        run: ./tests/run
