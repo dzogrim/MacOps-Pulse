@@ -64,6 +64,10 @@ Display all available command-line arguments:
 > Some maintenance actions may modify system or package-manager configuration.
 > Review the selected action before running it.
 
+### Demo
+
+![MacOps Pulse interactive demo](docs/assets/demo.gif)
+
 ## Installation
 
 ### Supported platforms
