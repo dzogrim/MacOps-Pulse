@@ -122,13 +122,18 @@ Verify the installation and inspect dependencies:
 ```bash
 ./refresh_system.sh --help
 ./refresh_system.sh --check-deps-scpt
-./refresh_system.sh --list
 ```
 
 Install missing optional dependencies when needed:
 
 ```bash
 ./refresh_system.sh --install-deps-scpt
+```
+
+Discover all supported tasks you can run:
+
+```bash
+./refresh_system.sh --list
 ```
 
 ### Interactive interface
@@ -139,7 +144,7 @@ Install at least one supported selector if it is not already available:
 brew install fzf
 ```
 
-or:
+or/and:
 
 ```bash
 brew install gum
@@ -165,20 +170,20 @@ A typical layout is:
 │           ├── brew-update.sh
 │           ├── ports-update.sh
 │           ├── git_refresh.sh
-│           ├── <environment/config file>
 │           └── <other maintenance scripts>
 │
 └── Users/
     └── <user>/
         ├── .bashrc
         ├── .bashrc.d/
-        ├── .config/
+        ├── .config/AdminHelpers/env
         └── <other user home files>
 ```
 
 The repository copy is used for development and version control, while the
-operational copy of refresh_system.sh and related helper scripts typically
-lives under `/opt/Admin/Scripts/` (must be in your env. PATH).
+operational copy of `refresh_system.sh` and related helper scripts typically
+lives under `/opt/Admin/Scripts/` (Ensure this directory is set in your
+`PATH`).
 
 The exact scripts directory and environment/configuration file location are
 installation-specific. Keep machine-specific paths, user-specific paths and
@@ -188,6 +193,17 @@ local environment or configuration mechanism.
 Before using actions that depend on external storage, package managers or
 third-party tools, make sure their local paths and dependencies are configured.
 Optional dependencies are required only by the actions that use them.
+
+#### Environment file
+
+`refresh_system.sh` expects a small local environment file for values that are
+specific to the workstation or user and should not be committed to the repository.
+
+Only variables required by the enabled actions need to be defined. Typically,
+these include local paths, external storage locations, and tool-specific settings.
+
+> [!IMPORTANT]
+> The environment file should remain local and must **never** be committed.
 
 ## Philosophy
 
