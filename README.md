@@ -4,12 +4,11 @@
 
 macOS Maintenance & Operations Toolkit powered by `refresh_system.sh`.
 
-MacOps Pulse is a modern and modular Bash toolkit for maintaining,
-updating, synchronizing, and auditing a macOS workstation from a
-single interactive CLI.
+MacOps Pulse is a modern, modular Bash toolkit for maintaining, updating,
+synchronizing and auditing a macOS workstation from a single interactive CLI.
 
-It brings routine system operations together while keeping each task
-explicit and independently executable.
+It brings routine system operations together while keeping each task explicit
+and independently executable.
 
 ## What it does
 
@@ -21,43 +20,43 @@ explicit and independently executable.
 - Application update checks
 - Architecture and compatibility checks
 - Spotlight and Desktop maintenance
-- Misc. monitoring checks
+- Miscellaneous monitoring checks
 - Batch update, backup and comparison workflows
 
 ## Usage
 
 > [!NOTE]
-> Apple Terminal.app is supported, but modern terminal emulators such as iTerm2
-> are recommended for a best interactive experience.
+> Apple Terminal.app is fully supported, but a modern terminal emulator such as
+> iTerm2 is recommended for a better interactive experience.
 
 Launch the interactive menu:
 
-``` bash
+```bash
 ./refresh_system.sh
 ```
 
 Or select an interface explicitly:
 
-``` bash
+```bash
 ./refresh_system.sh --fzf
 ./refresh_system.sh --gum
 ```
 
 List available actions:
 
-``` bash
+```bash
 ./refresh_system.sh --list
 ```
 
 Run a specific action directly:
 
-``` bash
+```bash
 ./refresh_system.sh --run <ID>
 ```
 
-Display all options:
+Display all available command-line options:
 
-``` bash
+```bash
 ./refresh_system.sh --help
 ```
 
@@ -65,34 +64,41 @@ Display all options:
 
 ### Supported platforms
 
-MacOps Pulse was designed for macOS and supports both major Mac architectures:
+MacOps Pulse is designed for macOS and supports both major Mac architectures:
 
 - Apple Silicon (`arm64`)
 - Intel (`x86_64`)
 
-The toolkit has evolved on Intel Macs since 2015 and also supports Apple Silicon.
+The toolkit has been developed and used on Intel Macs since 2015 and also
+supports Apple Silicon.
+
 Architecture-specific checks are performed at runtime where required.
 
 ### Requirements
 
-MacOps Pulse `refresh_system.sh` requires:
+The core `refresh_system.sh` script requires:
 
 - macOS
 - Bash 5 or later
+- Git for cloning and updating the repository
 - `fzf` or `gum` for the interactive interface
-- Additional tools only for the actions that use them
+
+Additional tools are required only by the actions that use them.
 
 > [!IMPORTANT]
 > The `/bin/bash` bundled with macOS is Bash 3.2 and is **not supported**.
-> Install a modern Bash before running MacOps Pulse.
+> A modern Bash installation is required.
 
-Using [Homebrew](https://brew.sh):
+### Install Bash
+
+The easiest way to install a current Bash version on macOS is with
+[Homebrew](https://brew.sh):
 
 ```bash
 brew install bash
 ```
 
-Verify that the Bash selected from your `PATH` is version 5 or later:
+Verify that Bash 5 or later is available:
 
 ```bash
 command -v bash
@@ -111,26 +117,30 @@ in your `PATH`.
 
 ### Install MacOps Pulse
 
+Clone this repository.
+
+Or simply download the [`refresh_system.sh`](refresh_system.sh) script.
+
+Ensure the `refresh_system.sh` is executable:
+
 ```bash
-git clone https://github.com/dzogrim/MacOps-Pulse.git
-cd MacOps-Pulse
 chmod +x refresh_system.sh
 ```
 
-Verify the installation and inspect dependencies:
+Verify the installation and inspect its dependencies:
 
 ```bash
 ./refresh_system.sh --help
 ./refresh_system.sh --check-deps-scpt
 ```
 
-Install missing optional dependencies when needed:
+Install missing optional dependencies when required:
 
 ```bash
 ./refresh_system.sh --install-deps-scpt
 ```
 
-Discover all supported tasks you can run:
+Finally, list the available maintenance actions:
 
 ```bash
 ./refresh_system.sh --list
@@ -138,27 +148,32 @@ Discover all supported tasks you can run:
 
 ### Interactive interface
 
-Install at least one supported selector if it is not already available:
+MacOps Pulse supports both `fzf` and `gum` as interactive selectors.
+
+Install either one:
 
 ```bash
 brew install fzf
 ```
 
-or/and:
+or:
 
 ```bash
 brew install gum
 ```
 
-### Expected local layout
+Both may be installed at the same time.
 
-The development repository can be cloned anywhere, for example under a personal
-workspace directory.
+## Recommended local layout
 
-For operational use, maintenance scripts are expected to live outside the user
-home directory, typically under `/opt/Admin/Scripts`.
+MacOps Pulse separates operational scripts from user-specific configuration.
 
-A typical layout is:
+Maintenance scripts are typically stored outside the user's home directory,
+under `/opt/Admin/Scripts`.
+
+User-specific configuration remains under the user's home directory.
+
+A typical installation looks like this:
 
 ```text
 /
@@ -176,42 +191,95 @@ A typical layout is:
     └── <user>/
         ├── .bashrc
         ├── .bashrc.d/
-        ├── .config/AdminHelpers/env
-        └── <other user home files>
+        ├── .config/
+        │   └── AdminHelpers/
+        │       └── env
+        └── <other user files>
 ```
 
-The repository copy is used for development and version control, while the
-operational copy of `refresh_system.sh` and related helper scripts typically
-lives under `/opt/Admin/Scripts/` (Ensure this directory is set in your
-`PATH`).
+`/opt/Admin/Scripts` is used for executable maintenance scripts, while
+`~/.config/AdminHelpers/env` contains workstation- and user-specific settings.
 
-The exact scripts directory and environment/configuration file location are
-installation-specific. Keep machine-specific paths, user-specific paths and
-creds outside the public repository, and expose them through the expected
-local environment or configuration mechanism.
+> [!NOTE]
+> `/opt` is outside the user's home directory and may initially require
+> administrator privileges to create. Once configured with appropriate ownership
+> and permissions, normal use of MacOps Pulse should not require modifying files
+> as `root`.
 
-Before using actions that depend on external storage, package managers or
-third-party tools, make sure their local paths and dependencies are configured.
-Optional dependencies are required only by the actions that use them.
+If an alternative scripts directory is used, configure the corresponding path
+in the environment file and ensure the directory is available in your `PATH`
+when required.
 
-#### Environment file
+Some environments may use `/usr/local/Admin/helpers` instead of
+`/opt/Admin/Scripts`.
 
-`refresh_system.sh` expects a small local environment file for values that are
-specific to the workstation or user and should not be committed to the repository.
+### Environment file
 
-Only variables required by the enabled actions need to be defined. Typically,
-these include local paths, external storage locations, and tool-specific settings.
+MacOps Pulse uses a local environment file for settings that vary between Macs
+or users:
+
+```text
+~/.config/AdminHelpers/env
+```
+
+This keeps machine-specific configuration separate from the public repository.
+
+Only variables required by the actions you actually use need to be defined.
+Typical values include:
+
+- the local username
+- the directory containing administrative helper scripts
+- local storage or synchronization paths
+- tool-specific configuration used by individual actions
+
+A minimal example is:
+
+```bash
+ADM_SHELL_USER_PERSO="${USER}"
+ADM_SHELL_SCPT_PERSO="/opt/Admin/Scripts"
+```
+
+An environment that also uses a separate professional helper location could use:
+
+```bash
+ADM_SHELL_USER_PROv1="user.name"
+ADM_SHELL_USER_PERSO="${USER}"
+
+ADM_SHELL_SCPT_PROv1="/usr/local/Admin/helpers"
+ADM_SHELL_SCPT_PERSO="/opt/Admin/Scripts"
+```
 
 > [!IMPORTANT]
-> The environment file should remain local and must **never** be committed.
+> The environment file is local configuration and must **never** be committed to
+> the public repository.
+>
+> Do not store any creds in the repository.
+
+Create the configuration directory if necessary:
+
+```bash
+mkdir -p "${HOME}/.config/AdminHelpers"
+```
+
+The environment file should be readable only by the current user:
+
+```bash
+chmod 600 "${HOME}/.config/AdminHelpers/env"
+```
+
+Before using actions that depend on external storage, package managers or
+third-party tools, make sure their required paths and dependencies are
+configured.
+
+Optional dependencies are required only by the actions that use them.
 
 ## Philosophy
 
-MacOps Pulse favors small, explicit and composable maintenance actions
-over opaque system automation.
+MacOps Pulse favors small, explicit and composable maintenance actions over
+opaque system automation.
 
-Potentially unavailable tools are detected at runtime, and operations
-can be executed individually or as grouped workflows.
+Potentially unavailable tools are detected at runtime, and operations can be
+executed individually or as grouped workflows.
 
 ## Tests
 
@@ -225,8 +293,8 @@ Run the full test suite with:
 ```
 
 The tests are designed to avoid interacting with the real user environment,
-including the actual $HOME, Desktop, Dropbox, package managers, and
-privileged system operations.
+including the actual `$HOME`, Desktop, Dropbox, package managers and privileged
+system operations.
 
 ## License
 
