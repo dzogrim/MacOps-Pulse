@@ -74,6 +74,14 @@ supports Apple Silicon.
 
 Architecture-specific checks are performed at runtime where required.
 
+#### Legacy Mac OS X / OS X support
+
+MacOps Pulse has evolved since 2015, when Apple's desktop operating system
+was still known as "OS X".
+
+Earlier releases of the toolkit were developed for legacy "OS X" environments,
+while the current release targets modern "macOS" systems.
+
 ### Requirements
 
 The core `refresh_system.sh` script requires:
@@ -93,8 +101,8 @@ Compare the system-provided Bash with the Homebrew version:
 
 | Installation | Command | Typical version | Supported |
 | --- | --- | --- | --- |
-| macOS system | `/bin/bash --version` | Bash 3.2.57 | ❌ No |
-| Homebrew | `/opt/homebrew/bin/bash --version` | Bash 5.3+ | ✅ Yes |
+| macOS system | `/bin/bash --version` | Bash 3.2 | ❌ No |
+| Homebrew | `/opt/homebrew/bin/bash --version` | Bash 5.3 | ✅ Yes |
 
 ### Install Bash
 
