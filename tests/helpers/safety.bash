@@ -4,7 +4,9 @@ export TEST_ROOT="${REFRESH_TEST_ROOT:-}"
 # Reject unsafe paths lexically and reject symlink traversal without following it.
 assert_sandbox_path() {
   local path=${1:-} current=$TEST_ROOT part
-  [[ -n "$path" && "$path" == "$TEST_ROOT/"* && "$path" != *'//'* ]] || return 1
+  # read consumes one line; reject line breaks before splitting path components.
+  [[ -n "$path" && "$path" == "$TEST_ROOT/"* && "$path" != *'//'* &&
+     "$path" != *$'\n'* && "$path" != *$'\r'* ]] || return 1
   local relative=${path#"$TEST_ROOT/"}
   local -a parts
   IFS=/ read -r -a parts <<< "$relative"

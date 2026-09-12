@@ -48,7 +48,7 @@ System loader/runtime reads are necessarily permitted; this is not a virtual mac
 Do not add real application integration tests to this suite. Changes to the sandbox
 policy deserve separate review, especially execution, IPC, network and write rules.
 
-## Risk map and coverage (35 tests)
+## First-wave risk map (35 tests)
 
 | Area | Regression prevented |
 | --- | --- |
@@ -98,7 +98,45 @@ bash -n refresh_system.sh
 shellcheck refresh_system.sh tests/helpers/*.bash tests/bootstrap.bash tests/run tests/*.bats
 ```
 
-Useful next cases: screenshot destination collisions and move failures; pip/pipx
-partial failures; mock Gist clone/install failures and cleanup; batch continuation
-across multiple failed steps; real selector PTY behavior in an equally isolated
+Useful next cases: screenshot move failures; pip/pipx partial failures; mock Gist
+clone/install failures and cleanup; real selector PTY behavior in an equally isolated
 runtime. Keep account-service and workstation access blocked.
+
+
+## Compatibility wave (45 additional tests; 80 total)
+
+`compat_*.bats` adds behavior checks without production refactoring or sandbox-policy
+changes. `helpers/compat.bash` provides disposable heredoc probes, narrow mock setup,
+and function execution tracing. Trace assertions observe actual CLI execution and
+prove no action handler was entered; they do not inspect production source text.
+
+| Area | Additional contracts |
+| --- | --- |
+| Platform | Darwin startup independent of mocked macOS versions and reported CPU |
+| BSD utilities | Native awk grouping/filtering, find permissions, sort order, stat timestamps, non-overwriting mv |
+| Registry | Complete ordered list parity, dispatch identity for all 33 IDs, invalid registration and missing handlers |
+| Lifecycle | Metadata isolation, exactly one direct action, invalid CLI never dispatches, inert sourcing |
+| Menus | Native 124/130, arbitrary failures, empty/malformed/unregistered output, missing-selector fallback |
+| Terminal/locale | Apple Terminal, iTerm, unknown/empty terminal, non-TTY dumb output; C, English/French UTF-8 |
+| Paths | Spaces, accents, apostrophes, brackets, emoji, collisions, empty environment values |
+| Dependencies | Mandatory command errors, minimal helper startup, missing lipo, optional Nix helper absence |
+| Privilege/batches | Exact sudo arguments, fatal propagation, ordered unique attempts, soft continuation and aggregate status |
+| Escape resistance | Empty paths, traversal, external symlink chains and multiline traversal strings |
+
+The implementation has **no sw_vers-based version parser, semantic version comparator,
+Rosetta detection, mdls call, or date-command parser**. Tests do not invent these
+features: they verify platform independence, version-string preservation in MacUpdater
+output, and that iTerm's guard does not require metadata tools. CPU classification
+uses mocked binary reports (Intel-only, ARM-only, universal), never installed binaries.
+This establishes simulated contracts, not execution on multiple OS releases or CPUs.
+
+All three tested locales are available on the validation host. Menus remain mocked;
+no real terminal or package manager is exercised. The existing 120-second suite bound,
+per-case HOME/TMPDIR, PATH mocks, and deny-default macOS sandbox remain intact.
+
+One **test-harness defect** was found: the path guard used line-oriented `read`, so it
+could validate only the first line of a multiline pathname. The guard now rejects CR
+and LF before splitting components. The retained regression checks rejection before
+rm/mv delegate. The OS sandbox remained the independent boundary throughout.
+No production compatibility defect was demonstrated and `refresh_system.sh` was not
+modified in this wave.
