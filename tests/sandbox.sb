@@ -1,0 +1,48 @@
+(version 1)
+(deny default)
+; Runtime discovery only; workstation directories and network are not allowed.
+(allow process-fork)
+(allow signal (target same-sandbox))
+; Basic memory geometry is used by sort; account/process queries remain denied.
+(allow sysctl-read (sysctl-name "hw.pagesize") (sysctl-name "hw.pagesize_compat") (sysctl-name "hw.memsize"))
+; No mach-lookup allowance: account-service IPC remains denied.
+(allow file-read*
+  (literal "/")
+  (subpath (param "TEST_ROOT"))
+  (subpath "/System/Library")
+  (subpath "/usr/lib")
+  (subpath "/usr/share")
+  (subpath "/Library/Apple/System/Library")
+  (subpath "/private/var/db/dyld")
+  (subpath "/private/var/db/timezone")
+  (subpath "/dev")
+  (literal "/private/etc/localtime"))
+(allow file-read-metadata
+  (literal "/") (literal "/private") (literal "/private/tmp")
+  (literal "/usr") (literal "/bin") (literal "/usr/bin")
+  (literal "/System") (literal "/Library") (literal "/dev"))
+; File reads of basic system executables do not authorize their execution.
+(allow file-read* (subpath "/bin") (subpath "/usr/bin"))
+(allow file-write* (subpath (param "TEST_ROOT"))
+  (literal "/dev/null") (subpath "/dev/fd"))
+; No real sudo, package managers, system updates or network clients can execute.
+(allow process-exec
+  (subpath (param "TEST_ROOT"))
+  (literal "/bin/bash") (literal "/bin/sh")
+  (literal "/bin/cat") (literal "/bin/chmod") (literal "/bin/cp")
+  (literal "/bin/date") (literal "/bin/echo") (literal "/bin/expr")
+  (literal "/bin/ln") (literal "/bin/ls") (literal "/bin/mkdir")
+  (literal "/bin/mv") (literal "/bin/pwd") (literal "/bin/rm")
+  (literal "/bin/sleep") (literal "/bin/test")
+  (literal "/usr/bin/awk") (literal "/usr/bin/basename")
+  (literal "/usr/bin/cmp") (literal "/usr/bin/cut")
+  (literal "/usr/bin/dirname") (literal "/usr/bin/env")
+  (literal "/usr/bin/find") (literal "/usr/bin/grep")
+  (literal "/usr/bin/head") (literal "/usr/bin/mkfifo")
+  (literal "/usr/bin/mktemp") (literal "/usr/bin/readlink")
+  (literal "/usr/bin/sed") (literal "/usr/bin/sort")
+  (literal "/usr/bin/stat") (literal "/usr/bin/tail")
+  (literal "/usr/bin/tee") (literal "/usr/bin/touch")
+  (literal "/usr/bin/tr") (literal "/usr/bin/true")
+  (literal "/usr/bin/nl") (literal "/usr/bin/uniq")
+  (literal "/usr/bin/wc"))
