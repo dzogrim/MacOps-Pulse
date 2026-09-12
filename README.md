@@ -21,7 +21,7 @@ explicit and independently executable.
 -   Application update checks
 -   Architecture and compatibility checks
 -   Spotlight and desktop maintenance
--   SSL certificate checks
+-   Misc. monitoring checks
 -   Batch update, backup and comparison workflows
 
 ## Usage
@@ -71,6 +71,18 @@ over opaque system automation.
 
 Potentially unavailable tools are detected at runtime, and operations
 can be executed individually or as grouped workflows.
+
+## Tests
+
+MacOps Pulse includes a non-regression test suite built around an isolated sandbox environment.
+
+Run the full test suite with:
+
+```bash
+./tests/run
+```
+
+The tests are designed to avoid interacting with the real user environment, including the actual $HOME, Desktop, Dropbox, package managers, and privileged system operations.
 
 ## License
 
