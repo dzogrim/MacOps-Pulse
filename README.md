@@ -35,7 +35,7 @@ Launch the interactive menu:
 ./refresh_system.sh
 ```
 
-Or select an interface explicitly:
+Or select an interface you like explicitly:
 
 ```bash
 ./refresh_system.sh --fzf
@@ -54,7 +54,7 @@ Run a specific action directly:
 ./refresh_system.sh --run <ID>
 ```
 
-Display all available command-line options:
+Display all available command-line arguments:
 
 ```bash
 ./refresh_system.sh --help
@@ -64,7 +64,7 @@ Display all available command-line options:
 
 ### Supported platforms
 
-MacOps Pulse is designed for macOS and supports both major Mac architectures:
+MacOps Pulse is designed for **macOS** and supports both **Mac** architectures:
 
 - Apple Silicon (`arm64`)
 - Intel (`x86_64`)
@@ -79,15 +79,22 @@ Architecture-specific checks are performed at runtime where required.
 The core `refresh_system.sh` script requires:
 
 - macOS
-- Bash 5 or later
-- Git for cloning and updating the repository
+- **Bash 5** or later
 - `fzf` or `gum` for the interactive interface
+- Optionally `git` for cloning and updating the repository
 
 Additional tools are required only by the actions that use them.
 
 > [!IMPORTANT]
-> The `/bin/bash` bundled with macOS is Bash 3.2 and is **not supported**.
+> The `/bin/bash` bundled with macOS is **Bash 3.2** and is **not supported**.
 > A modern Bash installation is required.
+
+Compare the system-provided Bash with the Homebrew version:
+
+| Installation | Command | Typical version | Supported |
+| --- | --- | --- | --- |
+| macOS system | `/bin/bash --version`              | Bash 3.2.57 | ❌ No |
+| Homebrew     | `/opt/homebrew/bin/bash --version` | Bash 5.3+   | ✅ Yes |
 
 ### Install Bash
 
@@ -107,13 +114,11 @@ bash --version
 
 A Homebrew Bash installation is typically located at:
 
-```text
-Apple Silicon: /opt/homebrew/bin/bash
-Intel:         /usr/local/bin/bash
-```
+- Apple Silicon (`arm64`): `/opt/homebrew/bin/bash`.
+- Intel (`x86_64`): `/usr/local/bin/bash` (legacy).
 
-Ensure the corresponding Homebrew `bin` directory appears before `/bin`
-in your `PATH`.
+Ensure the corresponding Homebrew `bin` directory appears **before**
+`/bin` in your `PATH`.
 
 ### Install MacOps Pulse
 
@@ -232,20 +237,14 @@ Typical values include:
 - local storage or synchronization paths
 - tool-specific configuration used by individual actions
 
-A minimal example is:
+A minimal example is an environment that uses a separate professional
+helper location could use:
 
 ```bash
-ADM_SHELL_USER_PERSO="${USER}"
-ADM_SHELL_SCPT_PERSO="/opt/Admin/Scripts"
-```
+ADM_SHELL_USER_PROv1="marie.martin"
+ADM_SHELL_USER_PERSO="marie-martin"
 
-An environment that also uses a separate professional helper location could use:
-
-```bash
-ADM_SHELL_USER_PROv1="user.name"
-ADM_SHELL_USER_PERSO="${USER}"
-
-ADM_SHELL_SCPT_PROv1="/usr/local/Admin/helpers"
+ADM_SHELL_SCPT_PROv1="${HOME}/.local/Admin/helpers"
 ADM_SHELL_SCPT_PERSO="/opt/Admin/Scripts"
 ```
 
@@ -281,7 +280,7 @@ opaque system automation.
 Potentially unavailable tools are detected at runtime, and operations can be
 executed individually or as grouped workflows.
 
-## Tests
+## Tests (Development)
 
 MacOps Pulse includes a non-regression test suite built around an isolated
 sandbox environment.
@@ -293,8 +292,8 @@ Run the full test suite with:
 ```
 
 The tests are designed to avoid interacting with the real user environment,
-including the actual `$HOME`, Desktop, Dropbox, package managers and privileged
-system operations.
+including the actual `$HOME`, Desktop, Dropbox, iCloud, package managers and
+privileged system operations.
 
 ## License
 
